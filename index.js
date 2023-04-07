@@ -6,26 +6,13 @@ app.get('/', (req, res) => {
     res.end('Hello World!');
 });
 
+app.post('/', (req, res, body) => {
+    console.log('[body]', body);
+    res.writeHead(201, { 'Content-type': 'application/json' })
+    res.end(body);
+})
+
 app.listen(3000, () => {
     console.log('init server from port 3000');
 })
 
-/**
- const express = require('express');
- const bodyParser = require('body-parser');
- const cors = require('cors');
- 
- const app = express();
- 
- app.use(bodyParser.json());
- app.use(cors());
- 
- app.get('/', (req, res) => {
-   res.send('API is working');
- });
- 
- app.listen(3000, () => {
-   console.log('Server started on port 3000');
- });
- * 
- */

@@ -5,7 +5,7 @@ class RestApi {
         this.routes = {};
         this.supportedMethods = ["GET", "POST"];
     }
-    
+
     /**
      * Adiciona uma rota HTTP à API.
      * @param {string} method - O método HTTP para adicionar (ex: "GET" ou "POST").
@@ -43,7 +43,7 @@ class RestApi {
     /**
      * Adiciona uma rota HTTP POST à API.
      * @param {string} url - O URL da rota POST.
-     * @param {(req: http.IncomingMessage, res: http.ServerResponse) => void} callback - O callback que será chamado quando a rota for acessada.
+     * @param {(req: http.IncomingMessage, res: http.ServerResponse, body?: Object) => void} callback - O callback que será chamado quando a rota for acessada.
      * @throws {Error} Se o URL ou callback forem inválidos.
      */
     post(url, callback) {
@@ -59,7 +59,9 @@ class RestApi {
             const method = req.method.toUpperCase();
             const route = this.routes[method]?.find((/** @type {{ url: string; }} */ route) => route.url === req.url);
             if (route && route.callback) {
-                route.callback(req, res);
+                this._readBody(req, body => {
+                    route.callback(req, res, body);
+                })
             } else {
                 this._notFound(res);
             }
@@ -67,9 +69,26 @@ class RestApi {
         server.listen(port, callback);
     }
 
+    /**
+     * @param {http.ServerResponse} res
+     */
     _notFound(res) {
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("404 Not Found");
+    }
+
+    /**
+     * @param {http.IncomingMessage} req
+     * @param {(body: string) => void} callback
+     */
+    _readBody(req, callback) {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            callback(body);
+        });
     }
 }
 
