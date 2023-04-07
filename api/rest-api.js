@@ -2,8 +2,32 @@ const http = require("http");
 
 class RestApi {
     constructor() {
-        this.gets = [];
-        this.posts = [];
+        this.routes = {};
+        this.supportedMethods = ["GET", "POST"];
+    }
+    
+    /**
+     * Adiciona uma rota HTTP à API.
+     * @param {string} method - O método HTTP para adicionar (ex: "GET" ou "POST").
+     * @param {string} url - O URL da rota a ser adicionada.
+     * @param {(req: http.IncomingMessage, res: http.ServerResponse) => void} callback - O callback que será chamado quando a rota for acessada.
+     * @throws {Error} Se o método, URL ou callback forem inválidos.
+     */
+    addRoute(method, url, callback) {
+        if (!method || !this.supportedMethods.includes(method.toUpperCase())) {
+            throw new Error(`Invalid HTTP method: ${method}`);
+        }
+        if (!url || typeof url !== "string") {
+            throw new Error("Invalid URL");
+        }
+        if (!callback || typeof callback !== "function") {
+            throw new Error("Invalid callback function");
+        }
+
+        if (!this.routes[method]) {
+            this.routes[method] = [];
+        }
+        this.routes[method].push({ url, callback });
     }
 
     /**
@@ -13,13 +37,7 @@ class RestApi {
      * @throws {Error} Se o URL ou callback forem inválidos.
      */
     get(url, callback) {
-        if (!url || typeof url !== 'string') {
-            throw new Error('Invalid URL');
-        }
-        if (!callback || typeof callback !== 'function') {
-            throw new Error('Invalid callback function');
-        }
-        this.gets.push({ url, callback });
+        this.addRoute("GET", url, callback);
     }
 
     /**
@@ -29,7 +47,7 @@ class RestApi {
      * @throws {Error} Se o URL ou callback forem inválidos.
      */
     post(url, callback) {
-        this.posts.push({ url, callback })
+        this.addRoute("POST", url, callback);
     }
 
     /**
@@ -38,23 +56,20 @@ class RestApi {
      */
     listen(port, callback) {
         const server = http.createServer((req, res) => {
-            if (req.method === 'GET') {
-                const get = this.gets.find(get => get.url === req.url);
-                if (get && get.callback) {
-                    get.callback(req, res);
-                } else {
-                    this._notFound(res);
-                }
-            } else if (req.method === 'POST') {
-
+            const method = req.method.toUpperCase();
+            const route = this.routes[method]?.find((/** @type {{ url: string; }} */ route) => route.url === req.url);
+            if (route && route.callback) {
+                route.callback(req, res);
+            } else {
+                this._notFound(res);
             }
         });
         server.listen(port, callback);
     }
 
     _notFound(res) {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("404 Not Found");
     }
 }
 
