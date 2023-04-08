@@ -37,9 +37,9 @@ class UrlUtil {
                 params[paramName] = paramValue;
             };
         }
-        const urlParamns = this.extractParamsFromURL(url);
+        // const urlParamns = this.extractParamsFromURL(url);
 
-        Object.assign(params, urlParamns);
+        // Object.assign(params, urlParamns);
 
         return params;
     }
