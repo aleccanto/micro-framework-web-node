@@ -1,27 +1,29 @@
-const RestApi = require("./api/rest-api");
+const Server = require('./server/server');
+const HTTP_STATUS = require('./utils/http-status');
 
-const app = new RestApi();
+const app = new Server();
 
 const list = [];
 
-app.get('/', (req, res) => {
-    res.end(JSON.stringify(list));
+app.get('/test-get', (req, res) => {
+  res.end(JSON.stringify(list));
 });
 
-app.post('/', (req, res, body) => {
-    body = JSON.parse(body);
-    list.push(body)
-    res.writeHead(201, { 'Content-type': 'application/json' })
-    res.write(JSON.stringify(body))
+app.post('/test-post', (req, res, body) => {
+  if (body == null) {
     res.end();
+  }
+  const parsedBody = JSON.parse(body);
+  list.push(parsedBody);
+  res.writeHead(HTTP_STATUS.CREATED, { 'Content-type': 'application/json' });
+  res.write(JSON.stringify(parsedBody));
+  res.end();
 });
 
-app.patch('/:id', (req, res, body) => {
-    body = JSON.parse(body);
-    console.log(req.url);
+app.patch('/test-patch/:id', (req, res, body, params) => {
+  res.writeHead(HTTP_STATUS.OK, { 'Content-type': 'application/json' });
+  res.write(body);
+  res.end();
 });
 
-app.listen(3000, () => {
-    console.log('init server from port 3000');
-})
-
+app.listen(3000, () => {});

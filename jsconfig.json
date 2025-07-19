@@ -1,14 +1,10 @@
 {
-    "compilerOptions": {
-        "module": "CommonJS",
-        "target": "ES6",
-        "allowJs": true,
-        "checkJs": true
-    },
-    "include": [
-        "**/*.js"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES6",
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["**/*.js"],
+  "exclude": ["node_modules"]
 }
