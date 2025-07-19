@@ -16,10 +16,12 @@ Este projeto utiliza as seguintes tecnologias e padrões:
 
 ### Tecnologias
 
-<img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/nodejs.svg" width="40" height="40" />
-<img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/jest.svg" width="40" height="40" />
- <img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/eslint.svg" width="40" height="40" />
- <img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/prettier.svg" width="40" height="40" />
+<p aling="left">
+    <img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/nodejs.svg" width="40" height="40" />
+    <img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/jest.svg" width="40" height="40" />
+    <img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/eslint.svg" width="40" height="40" />
+    <img src="https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/refs/heads/main/icons/prettier.svg" width="40" height="40" />
+</p>
 
 - **Node.js**: Plataforma de execução JavaScript no lado do servidor.
 - **Jest**: Framework de testes JavaScript.
